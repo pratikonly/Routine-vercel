@@ -224,6 +224,15 @@ function toggleEditMode() {
   document.querySelectorAll('.delete-task-btn').forEach(btn => {
     btn.classList.toggle('hidden', !editMode);
   });
+  document.querySelectorAll('.edit-day-btn').forEach(btn => {
+    btn.classList.toggle('hidden', !editMode);
+  });
+  document.querySelectorAll('.delete-day-btn').forEach(btn => {
+    btn.classList.toggle('hidden', !editMode);
+  });
+  document.querySelectorAll('.edit-task-btn').forEach(btn => {
+    btn.classList.toggle('hidden', !editMode);
+  });
 }
 
 editModeBtn.addEventListener('click', toggleEditMode);
@@ -266,6 +275,29 @@ function createDayContainer(day) {
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const formattedDate = `${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
   dayBox.innerHTML = `<h3>${day.day_name}</h3><p>${formattedDate}</p>`;
+  
+  // Edit day button
+  const editDayBtn = document.createElement('button');
+  editDayBtn.innerHTML = '<i class="material-icons">edit</i>';
+  editDayBtn.className = 'edit-day-btn';
+  editDayBtn.classList.toggle('hidden', !editMode);
+  editDayBtn.setAttribute('aria-label', 'Edit day');
+  editDayBtn.onclick = () => {
+    if (editMode) showEditDayForm(day.id, day.date);
+  };
+  dayBox.appendChild(editDayBtn);
+
+  // Delete day button
+  const deleteDayBtn = document.createElement('button');
+  deleteDayBtn.innerHTML = '<i class="material-icons">delete</i>';
+  deleteDayBtn.className = 'delete-day-btn';
+  deleteDayBtn.classList.toggle('hidden', !editMode);
+  deleteDayBtn.setAttribute('aria-label', 'Delete day');
+  deleteDayBtn.onclick = () => {
+    if (editMode) deleteDay(day.id);
+  };
+  dayBox.appendChild(deleteDayBtn);
+
   container.appendChild(dayBox);
 
   // Task area
@@ -303,7 +335,18 @@ function createTaskCard(task, dayName) {
     <div class="title">${escapeHtml(task.title)}</div>
     <div class="desc">${escapeHtml(task.description)}</div>
   `;
-  // Delete button
+  // Edit task button
+  const editTaskBtn = document.createElement('button');
+  editTaskBtn.innerHTML = '<i class="material-icons">edit</i>';
+  editTaskBtn.className = 'edit-task-btn';
+  editTaskBtn.classList.toggle('hidden', !editMode);
+  editTaskBtn.setAttribute('aria-label', 'Edit task');
+  editTaskBtn.onclick = () => {
+    if (editMode) showEditTaskForm(task);
+  };
+  card.appendChild(editTaskBtn);
+
+  // Delete task button
   const delBtn = document.createElement('button');
   delBtn.innerHTML = '<i class="material-icons">delete</i>';
   delBtn.className = 'delete-task-btn';
@@ -325,6 +368,22 @@ function showAddRoutineForm() {
     const dayName = date.toLocaleString('en-US', { weekday: 'long' });
     await fetch('/api/days', {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ day_name: dayName, date: data.date })
+    });
+    loadSchedule();
+  });
+}
+
+function showEditDayForm(dayId, currentDate) {
+  if (!editMode) return;
+  const pop = createFormPopup('Edit Day', [
+    { label: 'Date (YYYY-MM-DD)', id: 'date', type: 'date', value: currentDate }
+  ], async (data) => {
+    const date = new Date(data.date);
+    const dayName = date.toLocaleString('en-US', { weekday: 'long' });
+    await fetch(`/api/days/${dayId}`, {
+      method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ day_name: dayName, date: data.date })
     });
@@ -355,12 +414,34 @@ function showAddTaskForm(dayId) {
   });
 }
 
+function showEditTaskForm(task) {
+  if (!editMode) return;
+  const pop = createFormPopup('Edit Task', [
+    { label: 'From (HH:MM)', id: 'time_from', type: 'time', value: task.time_from },
+    { label: 'To (HH:MM)', id: 'time_to', type: 'time', value: task.time_to },
+    { label: 'Title', id: 'title', type: 'text', value: task.title },
+    { label: 'Description', id: 'description', type: 'text', value: task.description }
+  ], async (data) => {
+    // Calculate duration
+    const from = new Date(`1970-01-01T${data.time_from}:00`);
+    const to = new Date(`1970-01-01T${data.time_to}:00`);
+    const diffHours = (to - from) / (1000 * 60 * 60);
+    data.duration = `${diffHours}h`;
+    await fetch(`/api/tasks/${task.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    loadSchedule();
+  });
+}
+
 function createFormPopup(title, fields, onSubmit) {
   const pop = document.createElement('div');
   pop.className = 'popup enter';
   let inner = `<div class="popup-header"><div class="popup-title">${escapeHtml(title)}</div><button class="popup-close" aria-label="Close">✕</button></div><div class="popup-body"><form id="popup-form">`;
   fields.forEach(f => {
-    inner += `<label>${f.label}: <input type="${f.type}" id="${f.id}" required></label><br>`;
+    inner += `<label>${f.label}: <input type="${f.type}" id="${f.id}" value="${f.value || ''}" required></label><br>`;
   });
   inner += `<button type="submit">Submit</button></form></div>`;
   pop.innerHTML = inner;
@@ -388,6 +469,14 @@ async function deleteTask(id) {
   if (!editMode) return;
   if (confirm('Delete this task?')) {
     await fetch(`/api/tasks/${id}`, { method: 'DELETE' });
+    loadSchedule();
+  }
+}
+
+async function deleteDay(id) {
+  if (!editMode) return;
+  if (confirm('Delete this day and all its tasks?')) {
+    await fetch(`/api/days/${id}`, { method: 'DELETE' });
     loadSchedule();
   }
 }
