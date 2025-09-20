@@ -48,7 +48,6 @@ body::before {
   position: fixed;
   top: 12px; left: 50%; transform: translateX(-50%);
   z-index: 1100;
-  display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
   padding: 8px 12px;
   background: rgba(255,255,255,0.02);
   border-radius: 32px;
@@ -56,8 +55,17 @@ body::before {
   box-shadow: 0 6px 22px rgba(2,6,23,0.6);
   backdrop-filter: blur(6px);
 }
+.topbar-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
 .nav {
-  display: flex; gap: 16px; align-self: flex-start;
+  display: flex;
+  gap: 16px;
+  align-self: flex-start;
 }
 .nav-btn {
   width: auto; height: 44px; min-width: 44px;
@@ -70,21 +78,11 @@ body::before {
 }
 .nav-btn:hover { transform: translateY(-3px); color: #fff; box-shadow: 0 14px 34px rgba(2,6,23,0.7); }
 
-/* Button Container (PC) */
-.button-container {
-  text-align: center;
-  margin: 20px 0;
+/* Topbar Buttons (Edit Mode and Add Routine) */
+.topbar-buttons {
   display: flex;
-  justify-content: flex-end;
   gap: 12px;
-  max-width: 1100px;
-  margin-left: auto;
-  margin-right: auto;
 }
-.hidden-mobile { display: flex; }
-.hidden-pc { display: none; }
-
-/* Edit Mode Button */
 .edit-mode-btn {
   background: var(--card);
   color: white;
@@ -100,8 +98,6 @@ body::before {
   transform: translateY(-3px);
   box-shadow: 0 14px 34px rgba(2,6,23,0.7);
 }
-
-/* Add Routine Button */
 .add-routine-btn {
   background: var(--accent2);
   color: white;
@@ -182,8 +178,9 @@ body::before {
 
 /* Mobile view styling */
 @media (max-width:720px) {
-  body { padding-top: 100px; }
-  .topbar { padding: 6px 8px; gap: 6px; align-items: center; }
+  body { padding-top: 120px; }
+  .topbar { padding: 6px 8px; }
+  .topbar-content { flex-direction: column; align-items: center; gap: 6px; }
   .nav { justify-content: center; }
   .nav-btn {
     width: 40px; height: 40px; font-size: 12px; padding: 0;
@@ -192,11 +189,7 @@ body::before {
   .nav-btn:hover {
     transform: none; box-shadow: none; background: rgba(255,255,255,0.05);
   }
-  .mobile-button-container {
-    display: flex; gap: 8px; justify-content: center;
-  }
-  .hidden-pc { display: flex; }
-  .hidden-mobile { display: none; }
+  .topbar-buttons { gap: 8px; }
   .edit-mode-btn, .add-routine-btn {
     padding: 8px 16px;
     font-size: 12px;
@@ -207,10 +200,11 @@ body::before {
   .delete-task-btn {
     width: 32px; height: 32px; font-size: 16px;
   }
+  .week { margin-top: 20px; }
   .day-container { grid-template-columns: 110px 1fr; gap: 10px; }
   .day-box {
-    min-height: 86px; writing-mode: vertical-rl; transform: rotate(180deg);
-    padding: 8px; border-radius: 8px;
+    min-height: 70px; padding: 8px; border-radius: 8px;
+    writing-mode: vertical-rl; transform: rotate(180deg);
   }
   .task-area { flex-direction: column; }
   .task-card {
@@ -250,13 +244,13 @@ body::before {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 120px;
+  min-height: 90px;
 }
-.day-box h3 { margin: 0; font-size: 18px; font-weight: 700; color: #e6f7ff; }
-.day-box p { margin-top: 6px; color: var(--muted); font-size: 13px; }
+.day-box h3 { margin: 0; font-size: 16px; font-weight: 700; color: #e6f7ff; }
+.day-box p { margin-top: 4px; color: var(--muted); font-size: 12px; }
 
 /* task area and cards */
-.task-area { display: flex; gap: 12px; align-items: stretch; min-height: 120px; }
+.task-area { display: flex; gap: 12px; align-items: stretch; min-height: 90px; }
 .task-card {
   flex: 1 1 0;
   background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.006));
