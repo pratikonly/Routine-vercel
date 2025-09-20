@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Weekly Routine</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Top centered navbar -->
+  <header class="topbar" role="navigation" aria-label="Subjects">
+    <nav class="nav" role="menubar" aria-label="Subjects menu">
+      <button class="nav-btn" data-subject="Physics">Phys</button>
+      <button class="nav-btn" data-subject="Chemistry">Chem</button>
+      <button class="nav-btn" data-subject="Mathematics">Math</button>
+      <button class="nav-btn" data-subject="CS">CS</button>
+      <button class="nav-btn" data-subject="English">Eng</button>
+    </nav>
+  </header>
+
+  <!-- Add Routine Button -->
+  <div style="text-align: center; margin: 20px 0;">
+    <button id="add-routine-btn" class="nav-btn" style="background: var(--accent); color: white;">Add Routine (Day & Date)</button>
+  </div>
+
+  <!-- Main week (dynamic) -->
+  <main class="week" id="week"></main>
+
+  <!-- Popup overlay + container -->
+  <div id="overlay" class="overlay hidden" aria-hidden="true"></div>
+  <div id="popup-root"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
