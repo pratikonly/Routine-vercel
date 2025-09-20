@@ -196,7 +196,7 @@ function makeDraggable(el, handle) {
     const dx = t.clientX - startX;
     const dy = t.clientY - startY;
     el.style.left = (origX + dx) + 'px';
-    el.style.top = (origX + dx) + 'px';
+    el.style.top = (origY + dy) + 'px';
     ev.preventDefault();
   }
   function onTouchEnd() {
@@ -279,8 +279,9 @@ function createTaskCard(task, dayName) {
   `;
   // Delete button
   const delBtn = document.createElement('button');
-  delBtn.textContent = 'Delete';
-  delBtn.className = 'popup-close';
+  delBtn.innerHTML = '🗑️';
+  delBtn.className = 'delete-task-btn';
+  delBtn.setAttribute('aria-label', 'Delete task');
   delBtn.onclick = () => deleteTask(task.id);
   card.appendChild(delBtn);
   return card;
@@ -288,13 +289,14 @@ function createTaskCard(task, dayName) {
 
 function showAddRoutineForm() {
   const pop = createFormPopup('Add Routine', [
-    { label: 'Day Name', id: 'day_name', type: 'text' },
     { label: 'Date (YYYY-MM-DD)', id: 'date', type: 'date' }
   ], async (data) => {
+    const date = new Date(data.date);
+    const dayName = date.toLocaleString('en-US', { weekday: 'long' });
     await fetch('/api/days', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      body: JSON.stringify({ day_name: dayName, date: data.date })
     });
     loadSchedule();
   });
