@@ -68,6 +68,40 @@ body::before {
 }
 .nav-btn:hover { transform: translateY(-3px); color: #fff; box-shadow: 0 14px 34px rgba(2,6,23,0.7); }
 
+/* Add Routine Button */
+.add-routine-btn {
+  background: var(--accent);
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 32px;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.add-routine-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 34px rgba(2,6,23,0.7);
+}
+
+/* Add Task Button */
+.add-task-btn {
+  width: 40px; height: 40px;
+  background: var(--accent);
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .12s ease;
+}
+.add-task-btn:hover {
+  transform: translateY(-3px);
+}
+
 /* PC view nav button styling */
 @media (min-width:721px) {
   .nav-btn {
@@ -81,6 +115,10 @@ body::before {
     transform: none;
     box-shadow: none;
     background: rgba(255,255,255,0.05);
+  }
+  .add-routine-btn {
+    padding: 12px 24px;
+    font-size: 16px;
   }
 }
 
@@ -198,6 +236,13 @@ button[type="submit"] {
   }
   .nav-btn:hover {
     transform: none; box-shadow: none; background: rgba(255,255,255,0.05);
+  }
+  .add-routine-btn {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+  .add-task-btn {
+    width: 36px; height: 36px; font-size: 18px;
   }
   .day-container { grid-template-columns: 110px 1fr; gap: 10px; }
   .day-box {
