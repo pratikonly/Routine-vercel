@@ -196,7 +196,7 @@ function makeDraggable(el, handle) {
     const dx = t.clientX - startX;
     const dy = t.clientY - startY;
     el.style.left = (origX + dx) + 'px';
-    el.style.top = (origY + dy) + 'px';
+    el.style.top = (origX + dx) + 'px';
     ev.preventDefault();
   }
   function onTouchEnd() {
@@ -228,16 +228,21 @@ async function loadSchedule() {
 function createDayContainer(day) {
   const container = document.createElement('section');
   container.className = 'day-container';
-  if (day.day_name === 'Saturday' || day.day_name === 'Sunday') {
-    container.classList.add('weekend-separator');
-  }
+  const date = new Date(day.date);
+  const isWeekend = day.day_name === 'Saturday' || day.day_name === 'Sunday';
+  const isMonthEnd = date.getDate() === new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+  if (isWeekend) container.classList.add('weekend-separator');
+  if (isMonthEnd) container.classList.add('monthend-separator');
+
   // Add day box
   const dayBox = document.createElement('aside');
   dayBox.className = 'day-box';
-  if (day.day_name === 'Saturday' || day.day_name === 'Sunday') dayBox.classList.add('weekend');
+  if (isWeekend) dayBox.classList.add('weekend');
   if (day.day_name === 'Wednesday') dayBox.classList.add('wednesday');
   dayBox.dataset.day = day.day_name;
-  dayBox.innerHTML = `<h3>${day.day_name}</h3><p>${new Date(day.date).toLocaleDateString()}</p>`;
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const formattedDate = `${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+  dayBox.innerHTML = `<h3>${day.day_name}</h3><p>${formattedDate}</p>`;
   container.appendChild(dayBox);
 
   // Task area
@@ -247,10 +252,11 @@ function createDayContainer(day) {
     const taskCard = createTaskCard(task, day.day_name);
     taskArea.appendChild(taskCard);
   });
+
   // Add task button
   const addTaskBtn = document.createElement('button');
-  addTaskBtn.textContent = 'Add Task';
-  addTaskBtn.className = 'nav-btn';
+  addTaskBtn.textContent = '+';
+  addTaskBtn.className = 'add-task-btn';
   addTaskBtn.style.marginTop = '10px';
   addTaskBtn.onclick = () => showAddTaskForm(day.id);
   taskArea.appendChild(addTaskBtn);
