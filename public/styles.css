@@ -357,6 +357,7 @@ body::before {
     writing-mode: vertical-rl;
     transform: rotate(180deg);
     font-size: 14px;
+    width: 100px;
   }
   .day-box h3 {
     font-size: 14px;
@@ -371,6 +372,7 @@ body::before {
   .task-card {
     word-wrap: break-word;
     overflow-wrap: break-word;
+    margin-left: -80px;
   }
   .task-card .desc {
     word-wrap: break-word;
