@@ -48,7 +48,7 @@ body::before {
   position: fixed;
   top: 12px; left: 50%; transform: translateX(-50%);
   z-index: 1100;
-  display: flex; gap: 14px; align-items: center;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
   padding: 8px 12px;
   background: rgba(255,255,255,0.02);
   border-radius: 32px;
@@ -56,7 +56,9 @@ body::before {
   box-shadow: 0 6px 22px rgba(2,6,23,0.6);
   backdrop-filter: blur(6px);
 }
-.nav { display: flex; gap: 16px; }
+.nav {
+  display: flex; gap: 16px; align-self: flex-start;
+}
 .nav-btn {
   width: auto; height: 44px; min-width: 44px;
   background: transparent;
@@ -68,14 +70,19 @@ body::before {
 }
 .nav-btn:hover { transform: translateY(-3px); color: #fff; box-shadow: 0 14px 34px rgba(2,6,23,0.7); }
 
-/* Button Container */
+/* Button Container (PC) */
 .button-container {
   text-align: center;
   margin: 20px 0;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   gap: 12px;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
 }
+.hidden-mobile { display: flex; }
+.hidden-pc { display: none; }
 
 /* Edit Mode Button */
 .edit-mode-btn {
@@ -96,7 +103,7 @@ body::before {
 
 /* Add Routine Button */
 .add-routine-btn {
-  background: var(--accent);
+  background: var(--accent2);
   color: white;
   font-weight: 700;
   font-size: 14px;
@@ -117,7 +124,7 @@ body::before {
 /* Add Task Button */
 .add-task-btn {
   width: 40px; height: 40px;
-  background: var(--accent);
+  background: var(--accent2);
   color: white;
   font-size: 20px;
   font-weight: bold;
@@ -153,7 +160,7 @@ body::before {
   display: none;
 }
 
-/* PC view nav button styling */
+/* PC view styling */
 @media (min-width:721px) {
   .nav-btn {
     width: 60px; height: 45px; min-width: 60px;
@@ -171,6 +178,49 @@ body::before {
     padding: 12px 24px;
     font-size: 16px;
   }
+}
+
+/* Mobile view styling */
+@media (max-width:720px) {
+  body { padding-top: 100px; }
+  .topbar { padding: 6px 8px; gap: 6px; align-items: center; }
+  .nav { justify-content: center; }
+  .nav-btn {
+    width: 40px; height: 40px; font-size: 12px; padding: 0;
+    border: none; border-radius: 8px; transition: none;
+  }
+  .nav-btn:hover {
+    transform: none; box-shadow: none; background: rgba(255,255,255,0.05);
+  }
+  .mobile-button-container {
+    display: flex; gap: 8px; justify-content: center;
+  }
+  .hidden-pc { display: flex; }
+  .hidden-mobile { display: none; }
+  .edit-mode-btn, .add-routine-btn {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+  .add-task-btn {
+    width: 36px; height: 36px; font-size: 18px;
+  }
+  .delete-task-btn {
+    width: 32px; height: 32px; font-size: 16px;
+  }
+  .day-container { grid-template-columns: 110px 1fr; gap: 10px; }
+  .day-box {
+    min-height: 86px; writing-mode: vertical-rl; transform: rotate(180deg);
+    padding: 8px; border-radius: 8px;
+  }
+  .task-area { flex-direction: column; }
+  .task-card {
+    word-wrap: break-word; overflow-wrap: break-word;
+  }
+  .task-card .desc {
+    word-wrap: break-word; overflow-wrap: break-word; line-height: 1.4;
+  }
+  .popup { width: 85%; max-height: 70vh; }
+  .popup-body { max-height: 50vh; }
 }
 
 /* week layout */
@@ -275,45 +325,8 @@ input {
   padding: 5px; border-radius: 4px; width: 100%;
 }
 button[type="submit"] {
-  background: var(--accent); color: white; border: none;
+  background: var(--accent2); color: white; border: none;
   padding: 8px; border-radius: 4px; cursor: pointer; width: 100%; margin-top: 10px;
-}
-
-/* mobile adjustments */
-@media (max-width:720px) {
-  body { padding-top: 72px; }
-  .topbar { padding: 6px 8px; gap: 10px; }
-  .nav-btn {
-    width: 40px; height: 40px; font-size: 12px; padding: 0;
-    border: none; border-radius: 8px; transition: none;
-  }
-  .nav-btn:hover {
-    transform: none; box-shadow: none; background: rgba(255,255,255,0.05);
-  }
-  .edit-mode-btn, .add-routine-btn {
-    padding: 8px 16px;
-    font-size: 12px;
-  }
-  .add-task-btn {
-    width: 36px; height: 36px; font-size: 18px;
-  }
-  .delete-task-btn {
-    width: 32px; height: 32px; font-size: 16px;
-  }
-  .day-container { grid-template-columns: 110px 1fr; gap: 10px; }
-  .day-box {
-    min-height: 86px; writing-mode: vertical-rl; transform: rotate(180deg);
-    padding: 8px; border-radius: 8px;
-  }
-  .task-area { flex-direction: column; }
-  .task-card {
-    word-wrap: break-word; overflow-wrap: break-word;
-  }
-  .task-card .desc {
-    word-wrap: break-word; overflow-wrap: break-word; line-height: 1.4;
-  }
-  .popup { width: 85%; max-height: 70vh; }
-  .popup-body { max-height: 50vh; }
 }
 
 /* weekend separators */
