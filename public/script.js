@@ -104,11 +104,10 @@ function createPopup(subjectKey) {
 
   popupRoot.appendChild(pop);
 
-  // center (default) then allow drag
-  const existing = document.querySelectorAll('.popup').length;
-  pop.style.left = `calc(50% + ${existing * 8}px)`;
-  pop.style.top = `calc(50% + ${existing * 6}px)`;
-  pop.style.transform = 'translate(-50%,-50%)';
+  // center popup
+  pop.style.left = '50%';
+  pop.style.top = '50%';
+  pop.style.transform = 'translate(-50%, -50%)';
 
   // close button
   pop.querySelector('.popup-close').addEventListener('click', () => {
@@ -217,7 +216,7 @@ const addRoutineBtn = document.getElementById('add-routine-btn');
 function toggleEditMode() {
   editMode = !editMode;
   editModeBtn.textContent = `Edit Mode: ${editMode ? 'On' : 'Off'}`;
-  editModeBtn.style.background = editMode ? 'var(--accent)' : 'var(--card)';
+  editModeBtn.style.background = editMode ? 'var(--accent2)' : 'var(--card)';
   addRoutineBtn.classList.toggle('hidden', !editMode);
   document.querySelectorAll('.add-task-btn').forEach(btn => {
     btn.classList.toggle('hidden', !editMode);
@@ -363,6 +362,10 @@ function createFormPopup(title, fields, onSubmit) {
   pop.innerHTML = inner;
   popupRoot.appendChild(pop);
   overlay.classList.remove('hidden');
+  // Center popup
+  pop.style.left = '50%';
+  pop.style.top = '50%';
+  pop.style.transform = 'translate(-50%, -50%)';
   const form = pop.querySelector('#popup-form');
   form.onsubmit = async (e) => {
     e.preventDefault();
