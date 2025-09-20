@@ -227,6 +227,10 @@ function toggleEditMode() {
 }
 
 editModeBtn.addEventListener('click', toggleEditMode);
+editModeBtn.addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  toggleEditMode();
+});
 
 /* Dynamic rendering and forms */
 async function loadSchedule() {
@@ -390,6 +394,10 @@ async function deleteTask(id) {
 
 // Event listeners
 document.getElementById('add-routine-btn').addEventListener('click', showAddRoutineForm);
+document.getElementById('add-routine-btn').addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  showAddRoutineForm();
+});
 
 // Load on start
 loadSchedule();
