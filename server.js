@@ -1,4 +1,3 @@
-```javascript
      const express = require('express');
      const { Pool } = require('@neondatabase/serverless');
      const path = require('path');
