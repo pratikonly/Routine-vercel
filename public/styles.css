@@ -102,6 +102,22 @@ body::before {
   transform: translateY(-3px);
 }
 
+/* Delete Task Button */
+.delete-task-btn {
+  width: 36px; height: 36px;
+  background: transparent;
+  color: #ff5555;
+  font-size: 18px;
+  border: 1px solid rgba(255,85,85,0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .12s ease;
+}
+.delete-task-btn:hover {
+  background: rgba(255,85,85,0.1);
+}
+
 /* PC view nav button styling */
 @media (min-width:721px) {
   .nav-btn {
@@ -165,11 +181,13 @@ body::before {
   display: flex; flex-direction: column; gap: 8px;
   box-shadow: 0 8px 20px rgba(2,6,23,0.45);
   transition: transform .12s ease;
+  position: relative;
 }
 .task-card:hover { transform: translateY(-6px); }
 .time { color: var(--accent); font-weight: 700; font-size: 13px; }
 .title { font-weight: 800; font-size: 15px; color: #eaf6ff; }
 .desc { color: var(--muted); font-size: 13px; }
+.delete-task-btn { position: absolute; top: 8px; right: 8px; }
 
 /* weekend + wednesday */
 .weekend.day-box { background: var(--weekend-grad); }
@@ -243,6 +261,9 @@ button[type="submit"] {
   }
   .add-task-btn {
     width: 36px; height: 36px; font-size: 18px;
+  }
+  .delete-task-btn {
+    width: 32px; height: 32px; font-size: 16px;
   }
   .day-container { grid-template-columns: 110px 1fr; gap: 10px; }
   .day-box {
