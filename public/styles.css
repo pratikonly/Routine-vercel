@@ -68,6 +68,32 @@ body::before {
 }
 .nav-btn:hover { transform: translateY(-3px); color: #fff; box-shadow: 0 14px 34px rgba(2,6,23,0.7); }
 
+/* Button Container */
+.button-container {
+  text-align: center;
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* Edit Mode Button */
+.edit-mode-btn {
+  background: var(--card);
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 32px;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+.edit-mode-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 34px rgba(2,6,23,0.7);
+}
+
 /* Add Routine Button */
 .add-routine-btn {
   background: var(--accent);
@@ -83,6 +109,9 @@ body::before {
 .add-routine-btn:hover {
   transform: translateY(-3px);
   box-shadow: 0 14px 34px rgba(2,6,23,0.7);
+}
+.add-routine-btn.hidden {
+  display: none;
 }
 
 /* Add Task Button */
@@ -101,6 +130,9 @@ body::before {
 .add-task-btn:hover {
   transform: translateY(-3px);
 }
+.add-task-btn.hidden {
+  display: none;
+}
 
 /* Delete Task Button */
 .delete-task-btn {
@@ -117,6 +149,9 @@ body::before {
 .delete-task-btn:hover {
   background: rgba(255,85,85,0.1);
 }
+.delete-task-btn.hidden {
+  display: none;
+}
 
 /* PC view nav button styling */
 @media (min-width:721px) {
@@ -132,7 +167,7 @@ body::before {
     box-shadow: none;
     background: rgba(255,255,255,0.05);
   }
-  .add-routine-btn {
+  .edit-mode-btn, .add-routine-btn {
     padding: 12px 24px;
     font-size: 16px;
   }
@@ -255,7 +290,7 @@ button[type="submit"] {
   .nav-btn:hover {
     transform: none; box-shadow: none; background: rgba(255,255,255,0.05);
   }
-  .add-routine-btn {
+  .edit-mode-btn, .add-routine-btn {
     padding: 8px 16px;
     font-size: 12px;
   }
