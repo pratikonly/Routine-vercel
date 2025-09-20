@@ -17,10 +17,15 @@
       <button class="nav-btn" data-subject="CS">CS</button>
       <button class="nav-btn" data-subject="English">Eng</button>
     </nav>
+    <!-- Edit Mode and Add Routine Buttons for Mobile -->
+    <div class="mobile-button-container hidden-pc">
+      <button id="edit-mode-btn" class="edit-mode-btn">Edit Mode: Off</button>
+      <button id="add-routine-btn" class="add-routine-btn">Add Routine</button>
+    </div>
   </header>
 
-  <!-- Edit Mode and Add Routine Buttons -->
-  <div class="button-container">
+  <!-- Edit Mode and Add Routine Buttons for PC -->
+  <div class="button-container hidden-mobile">
     <button id="edit-mode-btn" class="edit-mode-btn">Edit Mode: Off</button>
     <button id="add-routine-btn" class="add-routine-btn">Add Routine</button>
   </div>
