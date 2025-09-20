@@ -347,7 +347,7 @@ body::before {
     margin-top: 20px;
   }
   .day-container {
-    grid-template-columns: 110px 1fr;
+    grid-template-columns: 90px 1fr;
     gap: 10px;
   }
   .day-box {
@@ -356,6 +356,14 @@ body::before {
     border-radius: 8px;
     writing-mode: vertical-rl;
     transform: rotate(180deg);
+    font-size: 14px;
+  }
+  .day-box h3 {
+    font-size: 14px;
+  }
+  .day-box p {
+    font-size: 10px;
+    margin-top: 2px;
   }
   .task-area {
     flex-direction: column;
