@@ -61,6 +61,7 @@ const SUBJECT_LISTS = {
 const overlay = document.getElementById('overlay');
 const popupRoot = document.getElementById('popup-root');
 const navButtons = document.querySelectorAll('.nav-btn');
+let editMode = false;
 
 // Set short labels for all views
 function setNavLabelsForAll() {
@@ -209,6 +210,25 @@ function makeDraggable(el, handle) {
 /* util */
 function escapeHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
 
+/* Edit Mode Toggle */
+const editModeBtn = document.getElementById('edit-mode-btn');
+const addRoutineBtn = document.getElementById('add-routine-btn');
+
+function toggleEditMode() {
+  editMode = !editMode;
+  editModeBtn.textContent = `Edit Mode: ${editMode ? 'On' : 'Off'}`;
+  editModeBtn.style.background = editMode ? 'var(--accent)' : 'var(--card)';
+  addRoutineBtn.classList.toggle('hidden', !editMode);
+  document.querySelectorAll('.add-task-btn').forEach(btn => {
+    btn.classList.toggle('hidden', !editMode);
+  });
+  document.querySelectorAll('.delete-task-btn').forEach(btn => {
+    btn.classList.toggle('hidden', !editMode);
+  });
+}
+
+editModeBtn.addEventListener('click', toggleEditMode);
+
 /* Dynamic rendering and forms */
 async function loadSchedule() {
   const week = document.getElementById('week');
@@ -257,8 +277,11 @@ function createDayContainer(day) {
   const addTaskBtn = document.createElement('button');
   addTaskBtn.textContent = '+';
   addTaskBtn.className = 'add-task-btn';
+  addTaskBtn.classList.toggle('hidden', !editMode);
   addTaskBtn.style.marginTop = '10px';
-  addTaskBtn.onclick = () => showAddTaskForm(day.id);
+  addTaskBtn.onclick = () => {
+    if (editMode) showAddTaskForm(day.id);
+  };
   taskArea.appendChild(addTaskBtn);
 
   container.appendChild(taskArea);
@@ -279,15 +302,19 @@ function createTaskCard(task, dayName) {
   `;
   // Delete button
   const delBtn = document.createElement('button');
-  delBtn.innerHTML = '🗑️';
+  delBtn.innerHTML = '<i class="material-icons">delete</i>';
   delBtn.className = 'delete-task-btn';
+  delBtn.classList.toggle('hidden', !editMode);
   delBtn.setAttribute('aria-label', 'Delete task');
-  delBtn.onclick = () => deleteTask(task.id);
+  delBtn.onclick = () => {
+    if (editMode) deleteTask(task.id);
+  };
   card.appendChild(delBtn);
   return card;
 }
 
 function showAddRoutineForm() {
+  if (!editMode) return;
   const pop = createFormPopup('Add Routine', [
     { label: 'Date (YYYY-MM-DD)', id: 'date', type: 'date' }
   ], async (data) => {
@@ -303,6 +330,7 @@ function showAddRoutineForm() {
 }
 
 function showAddTaskForm(dayId) {
+  if (!editMode) return;
   const pop = createFormPopup('Add Task', [
     { label: 'From (HH:MM)', id: 'time_from', type: 'time' },
     { label: 'To (HH:MM)', id: 'time_to', type: 'time' },
@@ -350,6 +378,7 @@ function createFormPopup(title, fields, onSubmit) {
 }
 
 async function deleteTask(id) {
+  if (!editMode) return;
   if (confirm('Delete this task?')) {
     await fetch(`/api/tasks/${id}`, { method: 'DELETE' });
     loadSchedule();
